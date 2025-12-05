@@ -1,0 +1,12 @@
+services:
+  mongo:
+    image: mongo:8.2.2-noble
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    
