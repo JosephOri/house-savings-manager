@@ -9,4 +9,9 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    restart: always
+    command: pnpm run start:dev
+    volumes:
+      - .:/usr/src/app
+      
     
