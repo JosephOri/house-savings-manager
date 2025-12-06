@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
-import { LoggerModule } from './Logger/logger.module';
+import { LoggerModule } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
