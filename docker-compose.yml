@@ -1,6 +1,16 @@
 services:
-  mongo:
-    image: mongo:8.2.2-noble
+  postgres:
+    image: postgres:18.1-alpine
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    restart: always
+    
   api:
     build: 
       context: .
