@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './auth/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -20,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
         NODE_ENV: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -41,6 +41,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
