@@ -7,12 +7,14 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import type { Response } from 'express';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import { UsersService } from './users/users.service';
+import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 
 @Controller('auth')
 export class AuthController {
@@ -52,10 +54,11 @@ export class AuthController {
     await this.authService.logout(res);
   }
 
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('me')
-  async me() {
-    return 'me';
+  async me(@CurrentUser() user: User) {
+    return user;
   }
 
   @HttpCode(HttpStatus.OK)
