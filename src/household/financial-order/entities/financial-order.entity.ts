@@ -1,10 +1,8 @@
+import { BaseEntity } from '@app/common';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm';
 
-export abstract class FinancialOrder {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export abstract class FinancialOrder extends BaseEntity {
   @Column()
   @IsString()
   name: string;
