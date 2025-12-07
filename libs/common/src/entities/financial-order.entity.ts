@@ -1,8 +1,6 @@
-import {
-  BaseEntity,
-  FINANCIAL_ORDER_TYPES,
-  type FinancialOrderType,
-} from '@app/common';
+import { FINANCIAL_ORDER_TYPES, type FinancialOrderType } from '@app/common';
+
+import { BaseEntity } from './base.entity';
 import {
   IsDate,
   IsIn,
@@ -11,7 +9,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Column, Entity } from 'typeorm';
+import { Household } from './household.entity';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
 export class FinancialOrder extends BaseEntity {
@@ -43,4 +42,7 @@ export class FinancialOrder extends BaseEntity {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ManyToOne(() => Household, (household) => household.financialOrders)
+  household: Household;
 }

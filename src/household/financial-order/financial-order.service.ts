@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractCrudService } from '@app/common';
-import { FinancialOrder } from './entities/financial-order.entity';
+import { FinancialOrder } from '../../../libs/common/src/entities/financial-order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
