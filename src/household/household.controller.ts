@@ -1,45 +1,37 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { HouseholdService } from './household.service';
 import { CreateHouseholdDto } from './dto/create-household.dto';
-import { UpdateHouseholdDto } from './dto/update-household.dto';
+import { CurrentUser, JwtAuthGuard, User } from '@app/common';
+import { CreateFinancialOrderDto } from './dto/create-financial-order.dto';
 
 @Controller('household')
 export class HouseholdController {
   constructor(private readonly householdService: HouseholdService) {}
 
   @Post()
-  async create(@Body() createHouseholdDto: CreateHouseholdDto) {
-    return await this.householdService.create(createHouseholdDto);
+  @UseGuards(JwtAuthGuard)
+  async create(
+    @Body() createHouseholdDto: CreateHouseholdDto,
+    @CurrentUser() user: User,
+  ) {
+    return await this.householdService.create(createHouseholdDto, user);
+  }
+
+  @Post('/financial-order')
+  @UseGuards(JwtAuthGuard)
+  async addFinancialOrder(
+    @Body() createFinancialOrderDto: CreateFinancialOrderDto,
+    @CurrentUser() user: User,
+  ) {
+    return await this.householdService.addFinancialOrder(
+      createFinancialOrderDto,
+      user,
+    );
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     return await this.householdService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.householdService.findOne(id);
-  }
-
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateHouseholdDto: UpdateHouseholdDto,
-  ) {
-    return await this.householdService.update(id, updateHouseholdDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.householdService.remove(id);
   }
 }

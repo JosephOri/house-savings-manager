@@ -38,7 +38,7 @@ export class FinancialOrder extends BaseEntity {
   @IsIn(FINANCIAL_ORDER_TYPES)
   type: FinancialOrderType;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
   @IsOptional()
   description?: string;
