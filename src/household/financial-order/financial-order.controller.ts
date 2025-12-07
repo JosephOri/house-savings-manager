@@ -7,16 +7,16 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { IncomeService } from './income.service';
-import { CreateIncomeDto } from './dto/create-income.dto';
-import { UpdateIncomeDto } from './dto/update-income.dto';
+import { FinancialOrderService } from './financial-order.service';
+import { CreateFinancialOrderDto } from './dto/create-financial-order.dto';
+import { UpdateFinancialOrderDto } from './dto/update-financial-order.dto';
 
 @Controller('income')
-export class IncomeController {
-  constructor(private readonly incomeService: IncomeService) {}
+export class FinancialOrderController {
+  constructor(private readonly incomeService: FinancialOrderService) {}
 
   @Post()
-  async create(@Body() createIncomeDto: CreateIncomeDto) {
+  async create(@Body() createIncomeDto: CreateFinancialOrderDto) {
     return await this.incomeService.create(createIncomeDto);
   }
 
@@ -33,7 +33,7 @@ export class IncomeController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateIncomeDto: UpdateIncomeDto,
+    @Body() updateIncomeDto: UpdateFinancialOrderDto,
   ) {
     return await this.incomeService.update(id, updateIncomeDto);
   }

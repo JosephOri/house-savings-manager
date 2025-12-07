@@ -6,9 +6,10 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Column } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
-export abstract class FinancialOrder extends BaseEntity {
+@Entity()
+export class FinancialOrder extends BaseEntity {
   @Column()
   @IsString()
   @IsNotEmpty()
