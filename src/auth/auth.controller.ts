@@ -38,16 +38,6 @@ export class AuthController {
     return await this.authService.signUp(createUserDto);
   }
 
-  @Get('all-users')
-  async findAll() {
-    return await this.usersService.findAll();
-  }
-
-  @Get('user/:id')
-  async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
-  }
-
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
