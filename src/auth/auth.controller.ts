@@ -45,7 +45,7 @@ export class AuthController {
 
   @Get('user/:id')
   async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(+id);
+    return await this.usersService.findOne(id);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -64,6 +64,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('remove/:id')
   async remove(@Param('id') id: string) {
-    return await this.usersService.remove(+id);
+    return await this.usersService.remove(id);
   }
 }
