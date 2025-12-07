@@ -1,6 +1,11 @@
-import { BaseEntity } from '@app/common';
+import {
+  BaseEntity,
+  FINANCIAL_ORDER_TYPES,
+  type FinancialOrderType,
+} from '@app/common';
 import {
   IsDate,
+  IsIn,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -29,6 +34,10 @@ export class FinancialOrder extends BaseEntity {
   @IsString()
   @IsNotEmpty()
   category: string;
+
+  @Column()
+  @IsIn(FINANCIAL_ORDER_TYPES)
+  type: FinancialOrderType;
 
   @Column()
   @IsString()

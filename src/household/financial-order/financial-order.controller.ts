@@ -13,33 +13,33 @@ import { UpdateFinancialOrderDto } from './dto/update-financial-order.dto';
 
 @Controller('income')
 export class FinancialOrderController {
-  constructor(private readonly incomeService: FinancialOrderService) {}
+  constructor(private readonly financialOrderService: FinancialOrderService) {}
 
   @Post()
-  async create(@Body() createIncomeDto: CreateFinancialOrderDto) {
-    return await this.incomeService.create(createIncomeDto);
+  async create(@Body() createFinancialOrderDto: CreateFinancialOrderDto) {
+    return await this.financialOrderService.create(createFinancialOrderDto);
   }
 
   @Get()
   async findAll() {
-    return await this.incomeService.findAll();
+    return await this.financialOrderService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.incomeService.findOne(id);
+    return await this.financialOrderService.findOne(id);
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateIncomeDto: UpdateFinancialOrderDto,
+    @Body() updateFinancialOrderDto: UpdateFinancialOrderDto,
   ) {
-    return await this.incomeService.update(id, updateIncomeDto);
+    return await this.financialOrderService.update(id, updateFinancialOrderDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.incomeService.remove(id);
+    return await this.financialOrderService.remove(id);
   }
 }

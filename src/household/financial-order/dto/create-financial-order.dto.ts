@@ -1,6 +1,6 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-import type { FinancialOrderType } from '@app/common';
+import { FINANCIAL_ORDER_TYPES, type FinancialOrderType } from '@app/common';
 
 export class CreateFinancialOrderDto {
   @Type(() => Number)
@@ -14,5 +14,8 @@ export class CreateFinancialOrderDto {
   @IsOptional()
   description?: string;
 
+  @IsIn(FINANCIAL_ORDER_TYPES, {
+    message: 'Type must be income, expense or investment',
+  })
   type: FinancialOrderType;
 }
