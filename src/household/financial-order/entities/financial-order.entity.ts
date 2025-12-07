@@ -1,22 +1,32 @@
 import { BaseEntity } from '@app/common';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Column } from 'typeorm';
 
 export abstract class FinancialOrder extends BaseEntity {
   @Column()
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @Column()
   @IsNumber()
+  @IsNotEmpty()
   amount: number;
 
   @Column()
   @IsDate()
+  @IsNotEmpty()
   date: Date;
 
   @Column()
   @IsString()
+  @IsNotEmpty()
   category: string;
 
   @Column()
