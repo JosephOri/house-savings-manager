@@ -8,9 +8,6 @@ export class CreateFinancialOrderDto {
   amount: number;
 
   @IsString()
-  householdId: string;
-
-  @IsString()
   category: string;
 
   @IsString()

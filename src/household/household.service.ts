@@ -40,22 +40,15 @@ export class HouseholdService {
     createFinancialOrderDto: CreateFinancialOrderDto,
     user: User,
   ) {
-    const household = await this.householdRepository.findOneBy({
-      id: createFinancialOrderDto.householdId,
-    });
-    if (!household) {
-      throw new BadRequestException('Household with this id not found');
+    const userDocument = await this.userRepository.findOneBy({ id: user.id });
+    const householdId = userDocument.householdId;
+    if (!householdId) {
+      throw new BadRequestException('User is not part of any household');
     }
     const financialOrder = this.financialOrderRepository.create({
       ...createFinancialOrderDto,
-      name: user.name,
-      date: new Date(),
-      household: household,
+      householdId,
     });
-    this.logger.log(
-      'Financial order added successfully for household:',
-      household,
-    );
     return await this.financialOrderRepository.save(financialOrder);
   }
 

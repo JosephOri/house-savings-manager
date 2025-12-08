@@ -10,7 +10,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Household } from './household.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class FinancialOrder extends BaseEntity {
@@ -43,6 +43,12 @@ export class FinancialOrder extends BaseEntity {
   @IsOptional()
   description?: string;
 
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  householdId: string;
+
   @ManyToOne(() => Household, (household) => household.financialOrders)
+  @JoinColumn({ name: 'householdId' })
   household: Household;
 }
