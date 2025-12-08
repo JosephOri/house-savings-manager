@@ -12,6 +12,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.useLogger(app.get(Logger));
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
+  app.enableCors({
+    origin:
+      configService.get<string>('FRONTEND_URL') || 'http://localhost:5173',
+    credentials: true,
+  });
   app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
