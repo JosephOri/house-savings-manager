@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 import type { Response } from 'express';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import { UsersService } from './users/users.service';
-import { CurrentUser, JwtAuthGuard, User } from '@app/common';
+import { JwtAuthGuard } from '@app/common';
 
 @Controller('auth')
 export class AuthController {
@@ -45,12 +45,6 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Get('me')
-  async me(@CurrentUser() user: User) {
-    return user;
-  }
-
   @HttpCode(HttpStatus.OK)
   @Post('remove/:id')
   async remove(@Param('id') id: string) {

@@ -1,9 +1,14 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AbstractCrudService, User } from '@app/common';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { AddUserToHouseholdDto } from '../dto/add-user-to-household.dto';
 
 @Injectable()
 export class UsersService extends AbstractCrudService<User> {
@@ -39,5 +44,28 @@ export class UsersService extends AbstractCrudService<User> {
       return null;
     }
     return user;
+  }
+
+  async addUserToHousehold(
+    addUserToHouseholdDto: AddUserToHouseholdDto,
+    user: User,
+  ) {
+    const userToAdd = await this.findByEmail(addUserToHouseholdDto.email);
+    if (!userToAdd) {
+      throw new UnprocessableEntityException(
+        'User with this email does not exist',
+      );
+    }
+    const adminDocument = await this.userRepository.findOneBy({
+      id: user.id,
+    });
+    if (!adminDocument) {
+      throw new UnprocessableEntityException('User does not exist');
+    }
+    if (!adminDocument.householdId) {
+      throw new BadRequestException('admin is not an admin of a household');
+    }
+    userToAdd.householdId = adminDocument.householdId;
+    return await this.userRepository.save(userToAdd);
   }
 }
