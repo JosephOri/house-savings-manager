@@ -19,7 +19,7 @@ export class FinancialOrderController {
 
   @Post('')
   @UseGuards(JwtAuthGuard)
-  async addFinancialOrder(
+  async createOrder(
     @Body() createFinancialOrderDto: CreateFinancialOrderDto,
     @CurrentUser() user: User,
   ) {
