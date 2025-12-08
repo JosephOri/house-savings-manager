@@ -14,6 +14,8 @@ export class HouseholdService {
     private readonly householdRepository: Repository<Household>,
     @InjectRepository(FinancialOrder)
     private readonly financialOrderRepository: Repository<FinancialOrder>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private readonly logger: Logger,
   ) {}
   async create(createHouseholdDto: CreateHouseholdDto, user: User) {
@@ -21,8 +23,8 @@ export class HouseholdService {
       const household = this.householdRepository.create({
         ...createHouseholdDto,
         adminId: user.id,
-        participants: [user],
       });
+      await this.userRepository.update(user.id, { householdId: household.id });
       return await this.householdRepository.save(household);
     } catch (error) {
       if (error.message.includes('duplicate key value')) {

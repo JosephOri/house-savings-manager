@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Household } from '@app/common/entities/household.entity';
@@ -20,6 +20,10 @@ export class User extends BaseEntity {
   @IsNotEmpty()
   password: string;
 
+  @Column({ nullable: true })
+  householdId: string;
+
   @ManyToOne(() => Household, (household) => household.participants)
+  @JoinColumn({ name: 'householdId' })
   household: Household;
 }
