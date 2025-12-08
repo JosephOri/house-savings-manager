@@ -9,11 +9,8 @@ export class HouseholdController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(
-    @Body() createHouseholdDto: CreateHouseholdDto,
-    @CurrentUser() user: User,
-  ) {
-    return await this.householdService.create(createHouseholdDto, user);
+  async create(@CurrentUser() user: User) {
+    return await this.householdService.create(user);
   }
 
   @Get()

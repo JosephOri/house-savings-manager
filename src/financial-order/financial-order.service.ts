@@ -27,6 +27,8 @@ export class FinancialOrderService extends AbstractCrudService<FinancialOrder> {
     return super.create({
       ...createFinancialOrderDto,
       householdId,
+      name: user.name,
+      date: new Date(),
     });
   }
 }
