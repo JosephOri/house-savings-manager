@@ -29,12 +29,19 @@ export class AuthService {
       name: user.name,
       id: user.id,
     };
+
+    const expires = new Date();
+    expires.setSeconds(
+      expires.getSeconds() + this.configService.get('JWT_EXPIRES_IN'),
+    );
+
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
     });
     res.cookie('Authentication', token, {
       httpOnly: true,
       secure: true,
+      expires,
     });
   }
 
