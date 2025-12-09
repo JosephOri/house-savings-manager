@@ -7,7 +7,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from './users.service';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 import { AddUserToHouseholdDto } from '../dto/add-user-to-household.dto';
 

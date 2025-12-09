@@ -1,0 +1,26 @@
+FROM node:24.11-alpine
+
+RUN corepack enable
+
+WORKDIR /usr/src/app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+COPY packages/shared/package.json ./packages/shared/
+
+COPY apps/backend/package.json ./apps/backend/
+
+COPY apps/backend/nest-cli.json ./apps/backend/
+
+RUN pnpm install
+
+EXPOSE 3000
+
+COPY packages/shared ./packages/shared
+COPY apps/backend ./apps/backend
+
+RUN pnpm --filter @repo/shared build
+
+WORKDIR /usr/src/app/apps/backend
+
+CMD ["pnpm", "start:dev"]
