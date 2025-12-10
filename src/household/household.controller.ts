@@ -1,6 +1,5 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Get } from '@nestjs/common';
 import { HouseholdService } from './household.service';
-import { CreateHouseholdDto } from './dto/create-household.dto';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 
 @Controller('household')
