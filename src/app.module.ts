@@ -22,7 +22,11 @@ import { FinancialOrderModule } from './financial-order/financial-order.module';
         DB_DATABASE: Joi.string().required(),
         NODE_ENV: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        FRONTEND_URL: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.number().required(),
+        GOOGLE_CLIENT_ID: Joi.string().required(),
+        GOOGLE_CLIENT_SECRET: Joi.string().required(),
+        GOOGLE_REDIRECT_URI: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
