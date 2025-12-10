@@ -4,24 +4,19 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
+  Query,
+  Redirect,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import type { Response } from 'express';
 import { CreateUserDto } from './users/dto/create-user.dto';
-import { UsersService } from './users/users.service';
-import { JwtAuthGuard } from '@app/common';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -44,10 +39,22 @@ export class AuthController {
     await this.authService.logout(res);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.OK)
-  @Post('remove/:id')
-  async remove(@Param('id') id: string) {
-    return await this.usersService.remove(id);
+  @Get('google-auth')
+  @Redirect()
+  async googleAuth(): Promise<{ url: string }> {
+    return this.authService.googleAuth();
+  }
+
+  @Get('google-callback')
+  @Redirect()
+  async googleAuthCallback(
+    @Query('code') code: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<{ url: string }> {
+    const googleAuthClientDto = await this.authService.getAuthClientData(code);
+    return await this.authService.authenticateGoogleUser(
+      googleAuthClientDto,
+      res,
+    );
   }
 }
