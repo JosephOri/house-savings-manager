@@ -13,13 +13,13 @@ import { AddUserToHouseholdDto } from '../dto/add-user-to-household.dto';
 @Injectable()
 export class UsersService extends AbstractCrudService<User> {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {
-    super(userRepository);
+    super(usersRepository);
   }
 
   private async validateCreateUserDto(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.findOne({
+    const user = await this.usersRepository.findOne({
       where: {
         email: createUserDto.email,
       },
@@ -39,7 +39,7 @@ export class UsersService extends AbstractCrudService<User> {
     });
   }
   async findByEmail(email: string) {
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this.usersRepository.findOneBy({ email });
     if (!user) {
       return null;
     }
@@ -56,7 +56,7 @@ export class UsersService extends AbstractCrudService<User> {
         'User with this email does not exist',
       );
     }
-    const adminDocument = await this.userRepository.findOneBy({
+    const adminDocument = await this.usersRepository.findOneBy({
       id: user.id,
     });
     if (!adminDocument) {
@@ -66,6 +66,18 @@ export class UsersService extends AbstractCrudService<User> {
       throw new BadRequestException('admin is not an admin of a household');
     }
     userToAdd.householdId = adminDocument.householdId;
-    return await this.userRepository.save(userToAdd);
+    return await this.usersRepository.save(userToAdd);
+  }
+
+  async validateGoogleUser(googleUser: any) {
+    let user = await this.findByEmail(googleUser.email);
+    if (!user) {
+      user = await this.create({
+        email: googleUser.email,
+        name: googleUser.name,
+        password: Math.random().toString() + Math.random().toString(),
+      });
+    }
+    return user;
   }
 }
