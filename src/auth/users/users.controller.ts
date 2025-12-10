@@ -19,7 +19,8 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @Get('me')
   async me(@CurrentUser() user: User) {
-    return user;
+    if (!user) return null;
+    return this.usersService.findOne(user.id);
   }
 
   @UseGuards(JwtAuthGuard)
