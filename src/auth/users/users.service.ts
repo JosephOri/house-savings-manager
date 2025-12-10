@@ -68,16 +68,4 @@ export class UsersService extends AbstractCrudService<User> {
     userToAdd.householdId = adminDocument.householdId;
     return await this.usersRepository.save(userToAdd);
   }
-
-  async validateGoogleUser(googleUser: any) {
-    let user = await this.findByEmail(googleUser.email);
-    if (!user) {
-      user = await this.create({
-        email: googleUser.email,
-        name: googleUser.name,
-        password: Math.random().toString() + Math.random().toString(),
-      });
-    }
-    return user;
-  }
 }
