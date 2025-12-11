@@ -33,11 +33,26 @@ export class UsersService extends AbstractCrudService<User> {
 
   async create(createUserDto: CreateUserDto) {
     await this.validateCreateUserDto(createUserDto);
-    return super.create({
+    return await super.create({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),
     });
   }
+  async findByEmailWithPassword(email: string) {
+    const user = await this.usersRepository.findOne({
+      select: {
+        password: true,
+      },
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
   async findByEmail(email: string) {
     const user = await this.usersRepository.findOneBy({ email });
     if (!user) {
