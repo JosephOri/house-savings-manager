@@ -62,6 +62,7 @@ export class AuthService {
       user = await this.usersService.create({
         email,
         name,
+        userName: email.split('@')[0],
         password: Math.random().toString(),
       });
     }
@@ -73,6 +74,7 @@ export class AuthService {
     const payload = {
       email: user.email,
       name: user.name,
+      userName: user.userName,
       id: user.id,
     };
 
