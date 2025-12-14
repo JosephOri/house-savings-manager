@@ -15,6 +15,10 @@ export class User extends BaseEntity {
   @IsNotEmpty()
   email: string;
 
+  @Column({ unique: true })
+  @IsString()
+  userName: string;
+
   @Column({ select: false })
   @IsString()
   @IsNotEmpty()
