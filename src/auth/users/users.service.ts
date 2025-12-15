@@ -41,7 +41,11 @@ export class UsersService extends AbstractCrudService<User> {
   async findByEmailWithPassword(email: string) {
     const user = await this.usersRepository.findOne({
       select: {
+        email: true,
         password: true,
+        userName: true,
+        id: true,
+        name: true,
       },
       where: {
         email: email,
@@ -55,6 +59,14 @@ export class UsersService extends AbstractCrudService<User> {
 
   async findByEmail(email: string) {
     const user = await this.usersRepository.findOneBy({ email });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findByUserName(userName: string) {
+    const user = await this.usersRepository.findOneBy({ userName });
     if (!user) {
       return null;
     }
