@@ -17,7 +17,7 @@ import { CreateFinancialOrderDto } from './dto/create-financial-order.dto';
 export class FinancialOrderController {
   constructor(private readonly financialOrderService: FinancialOrderService) {}
 
-  @Post('')
+  @Post()
   @UseGuards(JwtAuthGuard)
   async createOrder(
     @Body() createFinancialOrderDto: CreateFinancialOrderDto,
@@ -28,9 +28,11 @@ export class FinancialOrderController {
       user,
     );
   }
+
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.financialOrderService.findAll();
+  findAllByUser(@CurrentUser() user: User) {
+    return this.financialOrderService.findAllByUser(user);
   }
 
   @Get(':id')

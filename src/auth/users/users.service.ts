@@ -41,7 +41,11 @@ export class UsersService extends AbstractCrudService<User> {
   async findByEmailWithPassword(email: string) {
     const user = await this.usersRepository.findOne({
       select: {
+        email: true,
         password: true,
+        userName: true,
+        id: true,
+        name: true,
       },
       where: {
         email: email,
@@ -61,18 +65,25 @@ export class UsersService extends AbstractCrudService<User> {
     return user;
   }
 
-  async addUserToHousehold(
-    addUserToHouseholdDto: AddUserToHouseholdDto,
-    user: User,
-  ) {
-    const userToAdd = await this.findByEmail(addUserToHouseholdDto.email);
+  async findByUserName(userName: string) {
+    const user = await this.usersRepository.findOneBy({ userName });
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async addUserToHousehold(addUserToHouseholdDto: AddUserToHouseholdDto) {
+    const userToAdd = await this.findByUserName(
+      addUserToHouseholdDto.targetUserName,
+    );
     if (!userToAdd) {
       throw new UnprocessableEntityException(
         'User with this email does not exist',
       );
     }
     const adminDocument = await this.usersRepository.findOneBy({
-      id: user.id,
+      id: addUserToHouseholdDto.adminId,
     });
     if (!adminDocument) {
       throw new UnprocessableEntityException('User does not exist');

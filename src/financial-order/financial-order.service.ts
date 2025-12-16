@@ -31,4 +31,13 @@ export class FinancialOrderService extends AbstractCrudService<FinancialOrder> {
       date: new Date(),
     });
   }
+
+  async findAllByUser(user: User): Promise<FinancialOrder[]> {
+    const userDocument = await this.userRepository.findOneBy({ id: user.id });
+    const householdId = userDocument.householdId;
+    if (!householdId) {
+      throw new BadRequestException('User is not part of any household');
+    }
+    return this.financialOrderRepository.find({ where: { householdId } });
+  }
 }

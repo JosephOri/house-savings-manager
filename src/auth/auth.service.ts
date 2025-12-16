@@ -9,6 +9,8 @@ import { CreateUserDto } from './users/dto/create-user.dto';
 import { GoogleService } from './google/google.service';
 import { GoogleAuthClientDto } from './dto/google-auth-client.dto';
 import { User } from '@app/common';
+import generator from 'generate-password-ts';
+import { generateUsername } from 'unique-username-generator';
 
 @Injectable()
 export class AuthService {
@@ -59,12 +61,24 @@ export class AuthService {
     const { email, name } = googleAuthClientDto;
     let user = await this.usersService.findByEmail(email);
     if (!user) {
-      user = await this.usersService.create({
-        email,
-        name,
-        userName: email.split('@')[0],
-        password: Math.random().toString(),
-      });
+      try {
+        user = await this.usersService.create({
+          email,
+          name,
+          userName: email.split('@')[0],
+          password: generator.generate({ length: 15 }),
+        });
+      } catch (error) {
+        if (error.message.includes('duplicate key value')) {
+          user = await this.usersService.create({
+            email,
+            name,
+            userName: generateUsername('', 3),
+            password: generator.generate({ length: 15 }),
+          });
+        }
+        throw error;
+      }
     }
     await this.generateAndSendTokenRespone(user, res);
     return { url: this.configService.get<string>('FRONTEND_URL') };

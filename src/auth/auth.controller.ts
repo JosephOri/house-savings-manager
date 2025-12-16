@@ -8,11 +8,13 @@ import {
   Query,
   Redirect,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import type { Response } from 'express';
 import { CreateUserDto } from './users/dto/create-user.dto';
+import { JwtAuthGuard } from '@app/common';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +35,7 @@ export class AuthController {
     return await this.authService.signUp(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {

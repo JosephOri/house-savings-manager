@@ -4,6 +4,7 @@ import { HouseholdController } from './household.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Household, FinancialOrder, User } from '@app/common';
 import { JwtModule } from '@nestjs/jwt';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   controllers: [HouseholdController],
@@ -11,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     TypeOrmModule.forFeature([Household, FinancialOrder, User]),
     JwtModule,
+    NotificationsModule,
   ],
 })
 export class HouseholdModule {}
