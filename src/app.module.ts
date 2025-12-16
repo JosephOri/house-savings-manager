@@ -8,6 +8,7 @@ import { LoggerModule } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HouseholdModule } from './household/household.module';
 import { FinancialOrderModule } from './financial-order/financial-order.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FinancialOrderModule } from './financial-order/financial-order.module';
         GOOGLE_CLIENT_ID: Joi.string().required(),
         GOOGLE_CLIENT_SECRET: Joi.string().required(),
         GOOGLE_REDIRECT_URI: Joi.string().required(),
+        BROKER_URI: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -48,6 +50,7 @@ import { FinancialOrderModule } from './financial-order/financial-order.module';
     UsersModule,
     HouseholdModule,
     FinancialOrderModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [],
