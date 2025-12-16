@@ -20,7 +20,6 @@ import { JwtAuthGuard, LocalAuthGuard } from '@app/common';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -30,7 +29,6 @@ export class AuthController {
     await this.authService.login(loginDto, res);
   }
 
-  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {

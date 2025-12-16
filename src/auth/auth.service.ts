@@ -9,6 +9,7 @@ import { CreateUserDto } from './users/dto/create-user.dto';
 import { GoogleService } from './google/google.service';
 import { GoogleAuthClientDto } from './dto/google-auth-client.dto';
 import { User } from '@app/common';
+import generator from 'generate-password-ts';
 
 @Injectable()
 export class AuthService {
@@ -63,7 +64,7 @@ export class AuthService {
         email,
         name,
         userName: email.split('@')[0],
-        password: Math.random().toString(),
+        password: generator.generate({ length: 15 }),
       });
     }
     await this.generateAndSendTokenRespone(user, res);
