@@ -27,11 +27,7 @@ export class UsersController {
   @Post('add-to-household')
   async addUserToHousehold(
     @Body() addUserToHouseholdDto: AddUserToHouseholdDto,
-    @CurrentUser() user: User,
   ) {
-    return await this.usersService.addUserToHousehold(
-      addUserToHouseholdDto,
-      user,
-    );
+    return await this.usersService.addUserToHousehold(addUserToHouseholdDto);
   }
 }

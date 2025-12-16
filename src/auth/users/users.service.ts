@@ -73,18 +73,17 @@ export class UsersService extends AbstractCrudService<User> {
     return user;
   }
 
-  async addUserToHousehold(
-    addUserToHouseholdDto: AddUserToHouseholdDto,
-    user: User,
-  ) {
-    const userToAdd = await this.findByEmail(addUserToHouseholdDto.email);
+  async addUserToHousehold(addUserToHouseholdDto: AddUserToHouseholdDto) {
+    const userToAdd = await this.findByUserName(
+      addUserToHouseholdDto.targetUserName,
+    );
     if (!userToAdd) {
       throw new UnprocessableEntityException(
         'User with this email does not exist',
       );
     }
     const adminDocument = await this.usersRepository.findOneBy({
-      id: user.id,
+      id: addUserToHouseholdDto.adminId,
     });
     if (!adminDocument) {
       throw new UnprocessableEntityException('User does not exist');
