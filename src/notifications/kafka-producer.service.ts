@@ -51,6 +51,7 @@ export class KafkaProducerService implements OnModuleInit, OnModuleDestroy {
             value: JSON.stringify({
               ...payload,
               message: `${user.userName} has invited you to collaborate on a household`,
+              id: crypto.randomUUID().toString(),
             }),
           },
         ],
