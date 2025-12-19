@@ -1,4 +1,4 @@
-import { FINANCIAL_ORDER_TYPES, type FinancialOrderType } from '@app/common';
+import { TRANSACTION_TYPES, type TransactionType } from '@app/common';
 
 import { BaseEntity } from './base.entity';
 import {
@@ -13,7 +13,7 @@ import { Household } from './household.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
-export class FinancialOrder extends BaseEntity {
+export class Transaction extends BaseEntity {
   @Column()
   @IsString()
   @IsNotEmpty()
@@ -35,8 +35,8 @@ export class FinancialOrder extends BaseEntity {
   category: string;
 
   @Column()
-  @IsIn(FINANCIAL_ORDER_TYPES)
-  type: FinancialOrderType;
+  @IsIn(TRANSACTION_TYPES)
+  type: TransactionType;
 
   @Column({ nullable: true })
   @IsString()
@@ -48,7 +48,7 @@ export class FinancialOrder extends BaseEntity {
   @IsNotEmpty()
   householdId: string;
 
-  @ManyToOne(() => Household, (household) => household.financialOrders)
+  @ManyToOne(() => Household, (household) => household.transaction)
   @JoinColumn({ name: 'householdId' })
   household: Household;
 }

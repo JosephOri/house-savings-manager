@@ -37,7 +37,7 @@ export class HouseholdService extends AbstractCrudService<Household> {
     const households = await this.householdRepository.find({
       relations: {
         participants: true,
-        financialOrders: true,
+        transaction: true,
       },
     });
     return households;

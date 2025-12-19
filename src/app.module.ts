@@ -7,7 +7,7 @@ import * as Joi from 'joi';
 import { LoggerModule } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HouseholdModule } from './household/household.module';
-import { FinancialOrderModule } from './financial-order/financial-order.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
@@ -49,7 +49,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     AuthModule,
     UsersModule,
     HouseholdModule,
-    FinancialOrderModule,
+    TransactionModule,
     NotificationsModule,
   ],
   controllers: [AppController],

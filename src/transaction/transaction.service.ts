@@ -1,43 +1,40 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateFinancialOrderDto } from './dto/create-financial-order.dto';
-import { AbstractCrudService, FinancialOrder, User } from '@app/common';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { AbstractCrudService, Transaction, User } from '@app/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class FinancialOrderService extends AbstractCrudService<FinancialOrder> {
+export class TransactionService extends AbstractCrudService<Transaction> {
   constructor(
-    @InjectRepository(FinancialOrder)
-    private readonly financialOrderRepository: Repository<FinancialOrder>,
+    @InjectRepository(Transaction)
+    private readonly transactionRepository: Repository<Transaction>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {
-    super(financialOrderRepository);
+    super(transactionRepository);
   }
 
-  async createOrder(
-    createFinancialOrderDto: CreateFinancialOrderDto,
-    user: User,
-  ) {
+  async createOrder(createTransactionDto: CreateTransactionDto, user: User) {
     const userDocument = await this.userRepository.findOneBy({ id: user.id });
     const householdId = userDocument.householdId;
     if (!householdId) {
       throw new BadRequestException('User is not part of any household');
     }
     return super.create({
-      ...createFinancialOrderDto,
+      ...createTransactionDto,
       householdId,
       name: user.name,
       date: new Date(),
     });
   }
 
-  async findAllByUser(user: User): Promise<FinancialOrder[]> {
+  async findAllByUser(user: User): Promise<Transaction[]> {
     const userDocument = await this.userRepository.findOneBy({ id: user.id });
     const householdId = userDocument.householdId;
     if (!householdId) {
       throw new BadRequestException('User is not part of any household');
     }
-    return this.financialOrderRepository.find({ where: { householdId } });
+    return this.transactionRepository.find({ where: { householdId } });
   }
 }

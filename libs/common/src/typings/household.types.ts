@@ -1,6 +1,2 @@
-export const FINANCIAL_ORDER_TYPES = [
-  'income',
-  'expense',
-  'investment',
-] as const;
-export type FinancialOrderType = (typeof FINANCIAL_ORDER_TYPES)[number];
+export const TRANSACTION_TYPES = ['income', 'expense', 'investment'] as const;
+export type TransactionType = (typeof TRANSACTION_TYPES)[number];
