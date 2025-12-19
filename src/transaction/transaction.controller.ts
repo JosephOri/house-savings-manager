@@ -13,7 +13,7 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 
-@Controller('transaction')
+@Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
