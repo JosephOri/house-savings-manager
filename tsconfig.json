@@ -27,7 +27,8 @@
       ],
       "@app/common/*": [
         "libs/common/src/*"
-      ]
+      ],
+      "@repo/shared" :["../../packages/shared/src/index.ts"]
     }
   }
 }
