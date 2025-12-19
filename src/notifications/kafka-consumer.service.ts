@@ -20,10 +20,16 @@ export class KafkaConsumerService implements OnModuleInit, OnModuleDestroy {
     private readonly notificationsService: NotificationsService,
     private readonly configService: ConfigService,
   ) {
-    this.kafka = new Kafka({
-      clientId: 'household-app-server',
-      brokers: [`${this.configService.get<string>('BROKER_URI')}`],
-    });
+    try {
+      this.kafka = new Kafka({
+        clientId: 'household-app-server',
+        brokers: [`${this.configService.get<string>('BROKER_URI')}`],
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+
     this.consumer = this.kafka.consumer({ groupId: 'household-invites-group' });
   }
 
