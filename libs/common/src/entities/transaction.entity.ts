@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPES, type TransactionType } from '@app/common';
+import { TRANSACTION_TYPES, type TransactionType } from '@repo/shared';
 
 import { BaseEntity } from './base.entity';
 import {

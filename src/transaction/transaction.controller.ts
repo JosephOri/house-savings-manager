@@ -9,9 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { UpdateTransactionDto, CreateTransactionDto } from '@repo/shared';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Controller('transactions')
 export class TransactionController {
