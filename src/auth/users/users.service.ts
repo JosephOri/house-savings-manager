@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AbstractCrudService, User } from '@app/common';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { AddUserToHouseholdDto } from '../dto/add-user-to-household.dto';
+import { AddUserToHouseholdDto } from '@repo/shared';
 
 @Injectable()
 export class UsersService extends AbstractCrudService<User> {

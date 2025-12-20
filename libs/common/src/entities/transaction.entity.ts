@@ -34,7 +34,7 @@ export class Transaction extends BaseEntity {
   @IsNotEmpty()
   category: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   @IsIn(TRANSACTION_TYPES)
   type: TransactionType;
 

@@ -25,12 +25,13 @@ export class KafkaConsumerService implements OnModuleInit, OnModuleDestroy {
         clientId: 'household-app-server',
         brokers: [`${this.configService.get<string>('BROKER_URI')}`],
       });
+      this.consumer = this.kafka.consumer({
+        groupId: 'household-invites-group',
+      });
     } catch (error) {
       this.logger.error(error);
       throw error;
     }
-
-    this.consumer = this.kafka.consumer({ groupId: 'household-invites-group' });
   }
 
   async onModuleInit() {

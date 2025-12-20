@@ -1,7 +1,5 @@
 FROM node:24.11-alpine
-
 RUN corepack enable
-
 WORKDIR /usr/src/app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -20,6 +18,9 @@ COPY packages/shared ./packages/shared
 COPY apps/backend ./apps/backend
 
 RUN pnpm --filter @repo/shared build
+
+WORKDIR /usr/src/app/packages/shared
+RUN pnpm build
 
 WORKDIR /usr/src/app/apps/backend
 
