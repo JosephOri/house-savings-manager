@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from '@repo/shared';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { AbstractCrudService, Transaction, User } from '@app/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

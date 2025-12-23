@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
-import { type AddUserToHouseholdDto } from '@repo/shared';
+import { AddUserToHouseholdDto } from './dto/add-user-to-household.dto';
 
 @Controller('users')
 export class UsersController {
