@@ -23,7 +23,7 @@ export class TransactionController {
     @Body() createTransactionDto: CreateTransactionDto,
     @CurrentUser() user: User,
   ) {
-    return await this.transactionService.createOrder(
+    return await this.transactionService.createTransaction(
       createTransactionDto,
       user,
     );

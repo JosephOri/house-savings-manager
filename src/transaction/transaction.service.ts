@@ -15,7 +15,10 @@ export class TransactionService extends AbstractCrudService<Transaction> {
     super(transactionRepository);
   }
 
-  async createOrder(createTransactionDto: CreateTransactionDto, user: User) {
+  async createTransaction(
+    createTransactionDto: CreateTransactionDto,
+    user: User,
+  ) {
     const userDocument = await this.userRepository.findOneBy({ id: user.id });
     const householdId = userDocument.householdId;
     if (!householdId) {
