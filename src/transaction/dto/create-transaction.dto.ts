@@ -1,5 +1,5 @@
 import { type TransactionType } from '@repo/shared/src/typings';
-import { IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsNumber()
@@ -7,6 +7,10 @@ export class CreateTransactionDto {
 
   @IsString()
   category: string;
+
+  @IsOptional()
+  @IsDate()
+  date?: Date;
 
   @IsString()
   description?: string;

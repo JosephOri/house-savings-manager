@@ -28,7 +28,7 @@ export class TransactionService extends AbstractCrudService<Transaction> {
       ...createTransactionDto,
       householdId,
       name: user.name,
-      date: new Date(),
+      date: createTransactionDto.date || new Date(),
     });
   }
 
