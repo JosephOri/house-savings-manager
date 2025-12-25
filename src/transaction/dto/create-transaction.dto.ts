@@ -9,8 +9,8 @@ export class CreateTransactionDto {
   category: string;
 
   @IsOptional()
-  @IsDate()
-  date?: Date;
+  @IsString()
+  date?: string;
 
   @IsString()
   description?: string;

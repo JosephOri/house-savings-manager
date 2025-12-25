@@ -35,6 +35,12 @@ export class TransactionController {
     return this.transactionService.findAllByUser(user);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('date')
+  findAllGroupedByDate(@CurrentUser() user: User) {
+    return this.transactionService.getAllGroupedByDate(user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.transactionService.findOne(id);
