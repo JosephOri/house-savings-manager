@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
@@ -24,6 +25,14 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  const config = new DocumentBuilder()
+    .setTitle('House Savings Manager API')
+    .setDescription('The House Savings Manager API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
+
   await app.listen(configService.get<number>('PORT') ?? 3000);
 }
 bootstrap();

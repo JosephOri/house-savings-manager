@@ -15,12 +15,17 @@ import { AuthService } from './auth.service';
 import type { Response } from 'express';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import { JwtAuthGuard } from '@app/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: 200, description: 'User successfully logged in.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @Post('login')
   async login(
     @Body() loginDto: LoginDto,
@@ -30,6 +35,8 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Sign up new user' })
+  @ApiResponse({ status: 201, description: 'User successfully signed up.' })
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {
     return await this.authService.signUp(createUserDto);
@@ -37,6 +44,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Logout user' })
+  @ApiResponse({ status: 200, description: 'User successfully logged out.' })
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
     await this.authService.logout(res);

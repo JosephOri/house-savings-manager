@@ -8,16 +8,24 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 
+@ApiTags('transaction')
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new transaction' })
+  @ApiResponse({
+    status: 201,
+    description: 'The transaction has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @UseGuards(JwtAuthGuard)
   async createOrder(
     @Body() createTransactionDto: CreateTransactionDto,
