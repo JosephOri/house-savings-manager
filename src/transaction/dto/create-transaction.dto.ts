@@ -1,9 +1,16 @@
-import { type TransactionType } from '@repo/shared/src/typings';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  EXPENSE_CATEGORIES,
+  INCOME_CATEGORIES,
+  TRANSACTION_TYPES,
+  type TransactionType,
+} from '@repo/shared';
+import { IsNumber, IsOptional, IsString, IsIn, IsDate } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTransactionDto {
   @ApiProperty({ example: 100, description: 'The amount of the transaction' })
+  @Type(() => Number)
   @IsNumber()
   amount: number;
 
@@ -12,6 +19,7 @@ export class CreateTransactionDto {
     description: 'The category of the transaction',
   })
   @IsString()
+  @IsIn(INCOME_CATEGORIES || EXPENSE_CATEGORIES)
   category: string;
 
   @ApiProperty({
@@ -20,8 +28,9 @@ export class CreateTransactionDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
-  date?: string;
+  @Type(() => Date)
+  @IsDate()
+  date?: Date;
 
   @ApiProperty({
     example: 'Weekly grocery shopping',
@@ -32,9 +41,11 @@ export class CreateTransactionDto {
   description?: string;
 
   @ApiProperty({
-    example: 'EXPENSE',
-    description: 'The type of transaction (INCOME or EXPENSE)',
+    example: 'expense',
+    description: 'The type of transaction (income or expense)',
   })
   @IsString()
+  @Transform(({ value }) => value.toLowerCase())
+  @IsIn(TRANSACTION_TYPES)
   type: TransactionType;
 }

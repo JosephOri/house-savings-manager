@@ -3,7 +3,6 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { AbstractCrudService, Transaction, User } from '@app/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { groupBy } from 'rxjs';
 
 @Injectable()
 export class TransactionService extends AbstractCrudService<Transaction> {
@@ -29,7 +28,7 @@ export class TransactionService extends AbstractCrudService<Transaction> {
       ...createTransactionDto,
       householdId,
       name: user.name,
-      date: new Date(createTransactionDto.date || Date.now()),
+      date: createTransactionDto.date || Date.now(),
     });
   }
 
