@@ -47,29 +47,9 @@ export class TransactionService extends AbstractCrudService<Transaction> {
     if (!householdId) {
       throw new BadRequestException('User is not part of any household');
     }
-    const transactions = await this.transactionRepository.find({
+    return await this.transactionRepository.find({
       where: { householdId: householdId },
-      order: { date: 'DESC' },
-    });
-    return this.groupBy(transactions, (transaction) => {
-      return new Date(transaction.date).toISOString().split('T')[0];
+      order: { date: 'ASC' },
     });
   }
-
-  private groupBy = <T>(
-    array: T[],
-    keySelector: (item: T) => string | number,
-  ): Record<string, T[]> => {
-    return array.reduce(
-      (groups, item) => {
-        const key = keySelector(item);
-        if (!groups[key]) {
-          groups[key] = [];
-        }
-        groups[key].push(item);
-        return groups;
-      },
-      {} as Record<string, T[]>,
-    );
-  };
 }

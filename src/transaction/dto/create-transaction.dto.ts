@@ -19,7 +19,7 @@ export class CreateTransactionDto {
     description: 'The category of the transaction',
   })
   @IsString()
-  @IsIn(INCOME_CATEGORIES || EXPENSE_CATEGORIES)
+  @IsIn([...INCOME_CATEGORIES, ...EXPENSE_CATEGORIES])
   category: string;
 
   @ApiProperty({
