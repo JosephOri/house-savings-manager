@@ -9,9 +9,8 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, Repository } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { addDays, addMonths, addWeeks, addYears, startOfDay } from 'date-fns';
+import { addDays, addMonths, addWeeks, addYears } from 'date-fns';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { console } from 'inspector';
 
 @Injectable()
 export class RecurringTransactionService extends AbstractCrudService<RecurringTransaction> {
