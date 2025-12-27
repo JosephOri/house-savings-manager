@@ -3,14 +3,27 @@ import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { Household, Transaction, User } from '@app/common';
+import {
+  Household,
+  RecurringTransaction,
+  Transaction,
+  User,
+} from '@app/common';
+import { RecurringTransactionService } from './recurring-transaction.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   controllers: [TransactionController],
-  providers: [TransactionService],
+  providers: [TransactionService, RecurringTransactionService],
   imports: [
-    TypeOrmModule.forFeature([Household, Transaction, User]),
+    TypeOrmModule.forFeature([
+      Household,
+      Transaction,
+      User,
+      RecurringTransaction,
+    ]),
     JwtModule,
+    ScheduleModule.forRoot(),
   ],
 })
 export class TransactionModule {}

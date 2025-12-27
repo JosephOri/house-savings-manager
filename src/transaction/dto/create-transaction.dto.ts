@@ -48,4 +48,24 @@ export class CreateTransactionDto {
   @Transform(({ value }) => value.toLowerCase())
   @IsIn(TRANSACTION_TYPES)
   type: TransactionType;
+
+  @ApiProperty({
+    example: 'monthly',
+    description: 'Recurrence interval',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsIn(['daily', 'weekly', 'monthly', 'yearly'])
+  recurrenceInterval?: string;
+
+  @ApiProperty({
+    example: '2024-12-31T00:00:00Z',
+    description: 'End date for recurrence',
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  recurrenceEndDate?: Date;
 }
