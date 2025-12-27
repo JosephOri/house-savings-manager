@@ -28,7 +28,7 @@ export class TransactionService extends AbstractCrudService<Transaction> {
       ...createTransactionDto,
       householdId,
       name: user.name,
-      date: new Date(),
+      date: createTransactionDto.date || Date.now(),
     });
   }
 
@@ -39,5 +39,17 @@ export class TransactionService extends AbstractCrudService<Transaction> {
       throw new BadRequestException('User is not part of any household');
     }
     return this.transactionRepository.find({ where: { householdId } });
+  }
+
+  async getAllGroupedByDate(user: User) {
+    const userDocument = await this.userRepository.findOneBy({ id: user.id });
+    const householdId = userDocument.householdId;
+    if (!householdId) {
+      throw new BadRequestException('User is not part of any household');
+    }
+    return await this.transactionRepository.find({
+      where: { householdId: householdId },
+      order: { date: 'ASC' },
+    });
   }
 }
