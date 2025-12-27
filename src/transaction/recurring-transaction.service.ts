@@ -58,7 +58,7 @@ export class RecurringTransactionService extends AbstractCrudService<RecurringTr
     });
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_10_HOURS)
   async processDueTransactions() {
     this.logger.debug('Checking for due recurring transactions...');
     console.log('Checking for due recurring transactions...');
