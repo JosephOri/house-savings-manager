@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { AbstractCrudService, Category } from '@app/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { IsNull, Repository, In } from 'typeorm';
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '@repo/shared';
 @Injectable()
 export class CategoriesService
@@ -26,7 +26,7 @@ export class CategoriesService
   }
 
   private async seedDefaultCategories() {
-    for (const name in EXPENSE_CATEGORIES) {
+    for (const name of EXPENSE_CATEGORIES) {
       const exists = await this.categoryRepository.findOne({
         where: { value: name, userId: IsNull(), type: 'expense' },
       });
@@ -39,7 +39,7 @@ export class CategoriesService
       }
     }
 
-    for (const name in INCOME_CATEGORIES) {
+    for (const name of INCOME_CATEGORIES) {
       const exists = await this.categoryRepository.findOne({
         where: { value: name, userId: IsNull(), type: 'income' },
       });
