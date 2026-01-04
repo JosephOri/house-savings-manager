@@ -11,6 +11,7 @@ import { LessThanOrEqual, Repository } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { addDays, addMonths, addWeeks, addYears } from 'date-fns';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { endOfMonth } from 'date-fns';
 
 @Injectable()
 export class RecurringTransactionService extends AbstractCrudService<RecurringTransaction> {
@@ -156,5 +157,48 @@ export class RecurringTransactionService extends AbstractCrudService<RecurringTr
     return this.recurringTransactionRepository.find({
       where: { householdId },
     });
+  }
+
+  async calculateForecast(user: User): Promise<number> {
+    const activeRecurring = await this.getActiveRecurringTransactions(user);
+    if (activeRecurring.length === 0) {
+      return 0;
+    }
+
+    const now = new Date();
+    const endOfCurrentMonth = endOfMonth(now);
+    let totalForecast = 0;
+
+    for (const recurring of activeRecurring) {
+      // We simulate the next runs from the current nextCheckDate (or now if it's in the past but hasn't run yet?
+      // actually nextRunDate is the source of truth for next run)
+      // Ensure we don't count past transactions if the cron hasn't run yet,
+      // but for forecast "remaining this month" we probably want to include anything pending + future in this month.
+
+      // Let's iterate from recurring.nextRunDate until we pass endOfCurrentMonth
+
+      let tempDate = new Date(recurring.nextRunDate);
+      while (tempDate <= endOfCurrentMonth) {
+        // Check if end date reached
+        if (recurring.endDate && tempDate > recurring.endDate) {
+          break;
+        }
+        // Only add if it's in the future (or strictly "remaining" which implies >= now)
+        // If the cron hasn't picked it up yet (nextRunDate < now), it's effectively a "pending" expense that will happen soon.
+        // So we count it.
+
+        // Depending on type, add or subtract?
+        // User asked for "forecasted amount to pay", usually implies Expenses.
+        // If it's income, should we subtract? Or just ignore?
+        // "forecasted amount to pay by the end of the month" -> Expenses.
+        if (recurring.type === 'expense') {
+          totalForecast += recurring.amount;
+        }
+
+        tempDate = this.calculateNextDate(tempDate, recurring.interval);
+      }
+    }
+
+    return totalForecast;
   }
 }

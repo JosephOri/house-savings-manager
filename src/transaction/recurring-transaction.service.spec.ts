@@ -146,4 +146,57 @@ describe('RecurringTransactionService', () => {
       expect(calls).toBeLessThan(100); // definitely not 365
     });
   });
+  describe('calculateForecast', () => {
+    it('should calculate forecast for remaining days in month', async () => {
+      const now = new Date();
+      // Force "now" to be beginning of month to have deterministic run, or just mock date?
+      // Or just use relative dates.
+      // Let's assume we are at 28th of a 30 day month.
+      // We can't easily mock "new Date()" inside the service without a DateProvider.
+      // But we can check if I can use current date logic.
+      // The service uses "new Date()" internally.
+      // I'll rely on whatever "now" is.
+      // I'll create a recurring transaction that runs DAILY starting TOMORROW.
+      // And I will check end of month.
+
+      const {
+        endOfMonth,
+        addDays,
+        differenceInCalendarDays,
+      } = require('date-fns');
+      const start = addDays(new Date(), 1); // Tomorrow
+      const end = endOfMonth(new Date());
+      const daysRemaining = differenceInCalendarDays(end, start) + 1; // +1 inclusive if start <= end
+
+      // If we are at the very end of month, daysRemaining might be 0 or negative if start > end.
+      // To be safe, let's mock the recurring transaction to be running DAILY.
+
+      // If daysRemaining <= 0, forecast is 0.
+
+      const user = { id: 'u1', name: 'User' } as User;
+      userRepo.findOneBy = jest.fn().mockResolvedValue({ householdId: 'h1' });
+
+      const recurringTx = {
+        id: 'r1',
+        amount: 100,
+        interval: 'daily',
+        nextRunDate: start, // Next run is tomorrow
+        householdId: 'h1',
+        type: 'expense',
+      } as RecurringTransaction;
+
+      recurringRepo.find!.mockResolvedValue([recurringTx]);
+
+      const forecast = await service.calculateForecast(user);
+
+      // If start > end (e.g. today is last day of month), forecast 0.
+      // If start <= end, forecast = daysRemaining * 100.
+
+      if (start > end) {
+        expect(forecast).toBe(0);
+      } else {
+        expect(forecast).toBe(daysRemaining * 100);
+      }
+    });
+  });
 });

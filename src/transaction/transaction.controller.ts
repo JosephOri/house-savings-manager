@@ -63,6 +63,14 @@ export class TransactionController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('forecast')
+  async getForecast(@CurrentUser() user: User) {
+    const amount =
+      await this.recurringTransactionService.calculateForecast(user);
+    return { amount };
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('date')
   findAllGroupedByDate(@CurrentUser() user: User) {
     return this.transactionService.getAllGroupedByDate(user);
