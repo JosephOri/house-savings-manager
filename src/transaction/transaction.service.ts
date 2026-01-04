@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { AbstractCrudService, Transaction, User } from '@app/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 
 @Injectable()
 export class TransactionService extends AbstractCrudService<Transaction> {
@@ -32,13 +32,24 @@ export class TransactionService extends AbstractCrudService<Transaction> {
     });
   }
 
-  async findAllByUser(user: User): Promise<Transaction[]> {
+  async findAllByUser(
+    user: User,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<Transaction[]> {
     const userDocument = await this.userRepository.findOneBy({ id: user.id });
     const householdId = userDocument.householdId;
     if (!householdId) {
       throw new BadRequestException('User is not part of any household');
     }
-    return this.transactionRepository.find({ where: { householdId } });
+
+    const where: any = { householdId };
+
+    if (startDate && endDate) {
+      where.date = Between(new Date(startDate), new Date(endDate));
+    }
+
+    return this.transactionRepository.find({ where });
   }
 
   async getAllGroupedByDate(user: User) {

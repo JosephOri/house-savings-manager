@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TransactionService } from './transaction.service';
@@ -50,8 +51,12 @@ export class TransactionController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAllByUser(@CurrentUser() user: User) {
-    return this.transactionService.findAllByUser(user);
+  findAllByUser(
+    @CurrentUser() user: User,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ) {
+    return this.transactionService.findAllByUser(user, startDate, endDate);
   }
 
   @UseGuards(JwtAuthGuard)
