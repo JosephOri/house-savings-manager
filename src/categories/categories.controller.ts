@@ -17,8 +17,13 @@ import { CurrentUser, JwtAuthGuard, User } from '@app/common';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @CurrentUser() user: User,
+  ) {
+    createCategoryDto.userId = user.id;
     return this.categoriesService.create(createCategoryDto);
   }
 
